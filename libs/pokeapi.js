@@ -1,4 +1,6 @@
 class PokeApi {
+	static language = navigator.language;
+
 	static async getTypeEffectiveness(type) {
 	  try {
 	    const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
@@ -15,6 +17,11 @@ class PokeApi {
 	    const pokemonInfo = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
 	    const data = await pokemonInfo.json();
 
+		if(this.language === "zh-CN") {
+			this.language = "zh-Hans"
+		}
+		console.log(data)
+
 	    const abilityLength = data.abilities.length
 
 	    if (abilityIndex >= abilityLength) {
@@ -24,7 +31,9 @@ class PokeApi {
 	    const abilityName = data.abilities[abilityIndex].ability.name
 	    const abilityInfo = await fetch(`https://pokeapi.co/api/v2/ability/${abilityName}`);
 	    const abilityData = await abilityInfo.json();
-	    const description = abilityData.flavor_text_entries.find((entry) => entry.language.name === "en") || "No description found"
+		console.log(this.language)
+		console.log(abilityData.flavor_text_entries)
+	    const description = abilityData.flavor_text_entries.find((entry) => entry.language.name === this.language) || abilityData.flavor_text_entries.find((entry) => entry.language.name === 'en');
 	    return {
 	        'name': abilityName.toUpperCase().replace('-', ' '),
 	        'description': description.flavor_text,
