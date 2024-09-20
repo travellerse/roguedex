@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		let divId = message.type === 'UPDATE_ENEMIES_DIV' ? 'enemies' : 'allies'
 		HttpUtils.updateFromMessage(message)
 		HttpUtils.createCardsDiv(divId)
-    	sendResponse({ success: true });
+		sendResponse({ success: true });
 	}
 });
 
@@ -25,11 +25,11 @@ if (touchControlsElement) {
 			if (!(mutation.type === 'attributes' && mutation.attributeName === 'data-ui-mode')) return
 			const newValue = touchControlsElement.getAttribute('data-ui-mode');
 			console.log('New data-ui-mode:', newValue);
-			if(newValue === "MESSAGE" || newValue === "COMMAND" || newValue === "CONFIRM") {
-				browserApi.runtime.sendMessage({ 
-					type: 'BG_GET_SAVEDATA', 
-					data: LocalStorageUtils.getCurrentSessionData(localStorage), 
-					slotId: LocalStorageUtils.slotId 
+			if (newValue === "MESSAGE" || newValue === "COMMAND" || newValue === "FIGHT" || newValue === "CONFIRM") {
+				browserApi.runtime.sendMessage({
+					type: 'BG_GET_SAVEDATA',
+					data: LocalStorageUtils.getCurrentSessionData(localStorage),
+					slotId: LocalStorageUtils.slotId
 				})
 			} else {
 				if (newValue === "SAVE_SLOT") {
